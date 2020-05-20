@@ -67,7 +67,7 @@ class User implements Crud{
             
         // Check connection
         if ($con->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
+            die("Connection failed: " . $con->connect_error);
         }
 
         $uname = $this->username;

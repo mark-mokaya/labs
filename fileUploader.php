@@ -61,7 +61,7 @@ class FileUploader{
         
         if($this->uploadOk){
             move_uploaded_file($file_name, self::$target_directory . basename($final_file_name));
-            mysqli_query($con, "UPDATE user SET profile_image='$file_name' WHERE username= '$username'") or die("Error " . mysqli_error($con));
+            mysqli_query($con, "UPDATE user SET profile_image='$final_file_name' WHERE username= '$username'") or die("Error " . mysqli_error($con));
             mysqli_close($con);
             return true;
         }else{

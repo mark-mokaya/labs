@@ -16,7 +16,7 @@
         // $instance->setPassword($password);
         // $instance->setUsername($username);
 
-        $instance = new User($first_name, $last_name, $city, $username, $password);
+        $instance = new User($first_name, $last_name, $city, $username, $password, null, null);
 
         if($instance->isPasswordCorrect()){
             $instance->login();
@@ -26,7 +26,7 @@
             $instance->createUserSession();
         }else{
             $con->closeDatabase();
-            header["Location:login.php"];
+            header("Location:login.php");
         }
 
     }
@@ -42,7 +42,7 @@
     <body>
         <!-- $_SERVER['PHP_SELF'] submits form to itself for processing-->
 
-        <form method="post" name="login" id="login" action="<?=$_SERVER['PHP_SELF'];?>">
+        <form method="post" name="login" id="login" action="login.php">
         
             <table align="center">
                 <tr>

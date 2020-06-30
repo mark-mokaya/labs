@@ -5,5 +5,5 @@
     $city = null;
     $username = null;
     $password = null;
-    $instance = $instance = new User($first_name, $last_name, $city, $username, $password);
+    $instance =  new User($first_name, $last_name, $city, $username, $password, null, null);
     $instance->logout();

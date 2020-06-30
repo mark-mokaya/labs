@@ -11,9 +11,12 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
 
+        $utc_timestamp = $_POST['utc_timestamp'];
+        $offset = $_POST['time_zone_offset'];
+
 
         //Create user object, constructor will initialize vaiables
-        $user = new User($first_name, $last_name, $city, $username, $password);
+        $user = new User($first_name, $last_name, $city, $username, $password, $utc_timestamp, $offset);
 
         //create object for file uploading
         $uploader = new FileUploader;
@@ -21,7 +24,6 @@
         //check if username is available
         $availabilityCheck = $user->isUserExist();
 
-        
         if(!isset($availabilityCheck)){
             // call uploadFile() function which returns
             $file_upload_response = $uploader->fileWasSelected($_FILES["fileToUpload"]);
@@ -31,7 +33,6 @@
             $fileTypeCheck = $uploader->fileTypeIsCorrect();
             $fileSizeCheck = $uploader->getFileSize();
             
-
             if(!$fileExistsCheck && $fileTypeCheck && $fileSizeCheck<50000){
                 $res = $user->save();
                 $file_upload_response = $uploader->uploadFile($username);
@@ -54,8 +55,9 @@
         <title>Title goes here</title>
         <link rel="stylesheet" type="text/css" href=
         "main.css">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script type="text/javascript" src="validate.js"></script>
+        <script src="timezone.js"></script>
     </head>
     <body>
         <form method="post" enctype="multipart/form-data" name="user_details" id="user_details" onsubmit="return validateForm()" action="<?php $_SERVER['PHP_SELF'];?>">
@@ -109,6 +111,11 @@
                 <tr>
                     <td><button type="submit" name="btn-save"><strong>SAVE</strong></button></td>
                 </tr>
+
+                <input type="hidden" name="utc_timestamp" id="utc_timestamp" value="">
+
+                <input type="hidden" name="time_zone_offset" id="time_zone_offset" value="">
+
                 <tr>
                     <td><a href="login.php">Login</a></td>
                 </tr>

@@ -3,6 +3,7 @@ include "crud.php";
 include "authenticator.php";
 
 class User implements Crud{
+
     private $user_id;
     private $first_name;
     private $last_name;
@@ -10,15 +11,20 @@ class User implements Crud{
 
     private $username;
     private $password;
+    
+    private $utc_timestamp;
+    private $time_zone_offset;
 
     //constructor to initiate member values (private - can't be initiated elsewhere)
 
-    public function __construct($first_name, $last_name, $city_name, $username, $password){
+    public function __construct($first_name, $last_name, $city_name, $username, $password, $utc_timestamp, $offset){
         $this->first_name = $first_name;
         $this->last_name = $last_name;
         $this->city_name = $city_name;
         $this->username = $username;
         $this->password = $password;
+        $this->utc_timestamp = $utc_timestamp;
+        $this->time_zone_offset = $offset;
     }
 
     //Multiple constructors not allowed, so we fake one. Using static and the create() method, we access the "fake constructor" with the class, not the object. 
@@ -57,7 +63,27 @@ class User implements Crud{
 
     //user-id getter
     public function getUserId(){
-        return $this->$user_id;
+        return $this->user_id;
+    }
+
+    //utc timestamp setter
+    public function setUTC_timestamp($utc_timestamp) {
+        $this->utc_timestamp = $utc_timestamp;
+    }
+
+    //utc timestamp getter
+    public function getUTC_timestamp($utc_timestamp) {
+        return $this->$utc_timestamp;
+    }
+
+    //timezone getter
+    public function setTimeZoneOffset($time_zone_offset){
+        $this->time_zone_offset = $time_zone_offset;
+    }
+
+    //timezone setter
+    public function getTimeZoneOffset(){
+        return $this->time_zone_offset;
     }
 
     //check if user exists
@@ -98,8 +124,11 @@ class User implements Crud{
         $this->hashPassword();
         $pass = $this->password;
 
-        $res = mysqli_query($conn, "INSERT INTO user (first_name, last_name, user_city, username, password)
-        VALUES ('$fn', '$ln', '$city', '$uname', '$pass')") or die("Error " . mysqli_error($conn));
+        $utc_timestamp = $this->utc_timestamp;
+        $time_zone_offset = $this->time_zone_offset;
+
+        $res = mysqli_query($conn, "INSERT INTO user (first_name, last_name, user_city, username, password, user_utc_timestamp, user_timezone_offset)
+        VALUES ('$fn', '$ln', '$city', '$uname', '$pass', '$utc_timestamp', '$time_zone_offset')") or die("Error " . mysqli_error($conn));
 
         mysqli_close($conn);
         return $res;

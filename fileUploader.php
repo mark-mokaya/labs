@@ -55,7 +55,7 @@ class FileUploader{
         }
 
         $file_name = $this->getOriginalName();
-        $final_file_name = $this->getFinalFileName();
+        $final_file_name = time()."_".$this->getFinalFileName();
         $file_type = $this->getFileType();
         $file_size = $this->getFileSize();
         
